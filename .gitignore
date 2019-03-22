@@ -1,0 +1,8 @@
+# gradle
+.gradle
+.nb-gradle
+build
+out
+
+# ide
+.idea
