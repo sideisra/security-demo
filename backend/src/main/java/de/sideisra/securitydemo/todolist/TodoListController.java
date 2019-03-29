@@ -4,9 +4,11 @@ import de.sideisra.securitydemo.model.ListOwner;
 import de.sideisra.securitydemo.model.TodoList;
 import de.sideisra.securitydemo.model.TodoListItem;
 import de.sideisra.securitydemo.model.meta.TodoListId;
+import de.sideisra.securitydemo.model.meta.TodoListItemId;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,9 +30,9 @@ public class TodoListController {
     return todoListService.getTodoListsByOwner(owner);
   }
 
-  @GetMapping("/{id}")
-  public TodoList getTodoList(@PathVariable final TodoListId id) {
-    return todoListService.getTodoList(id);
+  @GetMapping("/{todoListId}")
+  public TodoList getTodoList(@PathVariable final TodoListId todoListId) {
+    return todoListService.getTodoList(todoListId);
   }
 
   @PostMapping
@@ -38,8 +40,13 @@ public class TodoListController {
     return todoListService.createTodoList(items, owner);
   }
 
-  @PostMapping("/{id}/addItem")
-  public void addItem(@PathVariable final TodoListId id, final TodoListItem newItem) {
-    todoListService.addItem(id, newItem);
+  @PostMapping("/{todoListId}/addItem")
+  public TodoListItemId addItem(@PathVariable final TodoListId todoListId, final String value, final boolean done) {
+    return todoListService.addItem(todoListId, value, done);
+  }
+
+  @PutMapping("/{todoListId}/items/{itemId}")
+  public void addItem(@PathVariable final TodoListId todoListId, @PathVariable final TodoListItemId itemId, final TodoListItem changedItem) {
+    todoListService.changeItem(todoListId, changedItem);
   }
 }

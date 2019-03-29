@@ -5,6 +5,7 @@ import de.sideisra.securitydemo.model.ListOwner;
 import de.sideisra.securitydemo.model.TodoList;
 import de.sideisra.securitydemo.model.TodoListItem;
 import de.sideisra.securitydemo.model.meta.TodoListId;
+import de.sideisra.securitydemo.model.meta.TodoListItemId;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
@@ -46,19 +47,22 @@ public class TodoListServiceTest {
 
   @Test
   public void shouldSaveNewTodoListWithNewItem() {
-    final TodoListItem oldItem = new TodoListItem("old item", false);
+    final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
     final TodoList todoList = new TodoList(TodoListId.newRandom(), LIST_OWNER, List.of(oldItem));
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
     doNothing().when(todoListRepo).saveTodoList(todoListArgumentCaptor.capture());
 
-    final TodoListItem newItem = new TodoListItem("new item", false);
-    cut.addItem(todoList.getId(), newItem);
+    final String newItemValue = "new item";
+    final boolean newItemDone = false;
+    final TodoListItemId newItemId = cut.addItem(todoList.getId(), newItemValue, newItemDone);
+
+    assertThat(newItemId).isNotNull();
 
     final TodoList capturedTodoList = todoListArgumentCaptor.getValue();
     assertThat(capturedTodoList).isNotSameAs(todoList);
-    assertThat(capturedTodoList.getItems()).containsExactly(oldItem, newItem);
+    assertThat(capturedTodoList.getItems()).containsExactly(oldItem, new TodoListItem(newItemId, newItemValue, newItemDone));
   }
 
   @Test
@@ -66,12 +70,37 @@ public class TodoListServiceTest {
     final TodoListId id = TodoListId.newRandom();
     when(todoListRepo.getTodoList(id)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> cut.addItem(id, null)).isInstanceOf(NotFoundException.class);
+    assertThatThrownBy(() -> cut.addItem(id, null, false)).isInstanceOf(NotFoundException.class);
+  }
+
+  @Test
+  public void shouldSaveNewTodoListWithChangedItem() {
+    final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), LIST_OWNER, List.of(oldItem));
+    when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
+
+    final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
+    doNothing().when(todoListRepo).saveTodoList(todoListArgumentCaptor.capture());
+
+    final TodoListItem changedItem = new TodoListItem(oldItem.getId(), "changed item", true);
+    cut.changeItem(todoList.getId(), changedItem);
+
+    final TodoList capturedTodoList = todoListArgumentCaptor.getValue();
+    assertThat(capturedTodoList).isNotSameAs(todoList);
+    assertThat(capturedTodoList.getItems()).containsExactly(changedItem);
+  }
+
+  @Test
+  public void shouldThrowExceptionWhenGivenIdIsUnknownOnChangeItem() {
+    final TodoListId id = TodoListId.newRandom();
+    when(todoListRepo.getTodoList(id)).thenReturn(Optional.empty());
+
+    assertThatThrownBy(() -> cut.changeItem(id, null)).isInstanceOf(NotFoundException.class);
   }
 
   @Test
   public void shouldSaveNewTodoList() {
-    final TodoListItem item = new TodoListItem("item", false);
+    final TodoListItem item = new TodoListItem(TodoListItemId.newRandom(), "item", false);
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
     doNothing().when(todoListRepo).saveTodoList(todoListArgumentCaptor.capture());

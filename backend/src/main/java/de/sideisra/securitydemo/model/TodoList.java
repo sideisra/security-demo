@@ -1,11 +1,14 @@
 package de.sideisra.securitydemo.model;
 
+import de.sideisra.securitydemo.exception.NotFoundException;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import static java.util.stream.Collectors.toList;
 
 public class TodoList {
   private final TodoListId id;
@@ -23,6 +26,17 @@ public class TodoList {
     final ArrayList<TodoListItem> newItems = new ArrayList<>(items);
     newItems.add(item);
     return new TodoList(id, owner, newItems);
+  }
+
+  public TodoList changeItem(TodoListItem changedItem) {
+    final List<TodoListItem> newItems = items.stream()
+      .map(i -> i.getId().equals(changedItem.getId()) ? changedItem : i)
+      .collect(toList());
+    if (newItems.contains(changedItem)) {
+      return new TodoList(id, owner, newItems);
+    } else {
+      throw new NotFoundException("Could not find item " + changedItem.getId() + " in tod list " + id);
+    }
   }
 
   public TodoListId getId() {
