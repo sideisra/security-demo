@@ -2,6 +2,8 @@ package de.sideisra.securitydemo.model;
 
 import de.sideisra.securitydemo.model.meta.TodoListId;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,10 +13,16 @@ public class TodoList {
   private final List<TodoListItem> items;
 
   public TodoList(final TodoListId id, final ListOwner owner,
-      final List<TodoListItem> items) {
+                  final List<TodoListItem> items) {
     this.id = id;
     this.owner = owner;
-    this.items = items;
+    this.items = Collections.unmodifiableList(items);
+  }
+
+  public TodoList addItem(final TodoListItem item) {
+    final ArrayList<TodoListItem> newItems = new ArrayList<>(items);
+    newItems.add(item);
+    return new TodoList(id, owner, newItems);
   }
 
   public TodoListId getId() {
@@ -37,8 +45,8 @@ public class TodoList {
       return false;
     final TodoList todoList = (TodoList) o;
     return Objects.equals(id, todoList.id) &&
-        Objects.equals(owner, todoList.owner) &&
-        Objects.equals(items, todoList.items);
+      Objects.equals(owner, todoList.owner) &&
+      Objects.equals(items, todoList.items);
   }
 
   @Override
