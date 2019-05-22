@@ -4,6 +4,7 @@ import de.sideisra.securitydemo.exception.NotFoundException;
 import de.sideisra.securitydemo.model.ListOwner;
 import de.sideisra.securitydemo.model.TodoList;
 import de.sideisra.securitydemo.model.TodoListItem;
+import de.sideisra.securitydemo.model.TodoListItemCreate;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
 import org.junit.Test;
@@ -31,7 +32,7 @@ public class TodoListServiceTest {
 
   @Test
   public void shouldReturnTodoListWithGivenId() {
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), LIST_OWNER, List.of());
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of());
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     assertThat(cut.getTodoList(todoList.getId())).isEqualTo(todoList);
@@ -48,7 +49,7 @@ public class TodoListServiceTest {
   @Test
   public void shouldSaveNewTodoListWithNewItem() {
     final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), LIST_OWNER, List.of(oldItem));
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of(oldItem));
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
@@ -76,7 +77,7 @@ public class TodoListServiceTest {
   @Test
   public void shouldSaveNewTodoListWithChangedItem() {
     final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), LIST_OWNER, List.of(oldItem));
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of(oldItem));
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
@@ -100,16 +101,17 @@ public class TodoListServiceTest {
 
   @Test
   public void shouldSaveNewTodoList() {
-    final TodoListItem item = new TodoListItem(TodoListItemId.newRandom(), "item", false);
+    final TodoListItemCreate itemCreate = new TodoListItemCreate("item", false);
+    final TodoListItem item = new TodoListItem(TodoListItemId.newRandom(), itemCreate.getValue(), itemCreate.isDone());
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
     doNothing().when(todoListRepo).saveTodoList(todoListArgumentCaptor.capture());
 
-    final TodoListId newId = cut.createTodoList(List.of(item), LIST_OWNER);
+    final TodoListId newId = cut.createTodoList("my-list", List.of(itemCreate), LIST_OWNER);
 
     assertThat(newId).isNotNull();
     final TodoList capturedTodoList = todoListArgumentCaptor.getValue();
-    assertThat(capturedTodoList.getItems()).containsExactly(item);
+    assertThat(capturedTodoList.getItems()).usingElementComparatorIgnoringFields("id").containsExactly(item);
     assertThat(capturedTodoList.getId()).isEqualTo(newId);
   }
 

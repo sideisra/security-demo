@@ -21,9 +21,9 @@ public class TodoListRepoTest {
 
   @Test
   public void shouldReturnTodoListWithGivenId() {
-    final TodoList todoList1 = new TodoList(TodoListId.newRandom(), LIST_OWNER_1, List.of());
+    final TodoList todoList1 = new TodoList(TodoListId.newRandom(), "my list 1", LIST_OWNER_1, List.of());
     cut.saveTodoList(todoList1);
-    final TodoList todoList2 = new TodoList(TodoListId.newRandom(), LIST_OWNER_1, List.of());
+    final TodoList todoList2 = new TodoList(TodoListId.newRandom(), "my list 2", LIST_OWNER_1, List.of());
     cut.saveTodoList(todoList2);
 
     assertThat(cut.getTodoList(todoList1.getId())).contains(todoList1);
@@ -32,16 +32,16 @@ public class TodoListRepoTest {
 
   @Test
   public void shouldReturnEmptyOptionalWhenGivenIdIsUnknown() {
-    cut.saveTodoList(new TodoList(TodoListId.newRandom(), LIST_OWNER_1, List.of()));
+    cut.saveTodoList(new TodoList(TodoListId.newRandom(), "my list 1", LIST_OWNER_1, List.of()));
 
     assertThat(cut.getTodoList(TodoListId.newRandom())).isEmpty();
   }
 
   @Test
   public void shouldReturnTodoListsOfGivenOwner() {
-    final TodoList todoList1 = new TodoList(TodoListId.newRandom(), LIST_OWNER_1, List.of());
+    final TodoList todoList1 = new TodoList(TodoListId.newRandom(), "my list 1", LIST_OWNER_1, List.of());
     cut.saveTodoList(todoList1);
-    final TodoList todoList2 = new TodoList(TodoListId.newRandom(), LIST_OWNER_2, List.of());
+    final TodoList todoList2 = new TodoList(TodoListId.newRandom(), "my list 2", LIST_OWNER_2, List.of());
     cut.saveTodoList(todoList2);
 
     assertThat(cut.getTodoListsByOwner(LIST_OWNER_1)).containsExactly(todoList1);

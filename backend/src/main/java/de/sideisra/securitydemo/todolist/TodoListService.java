@@ -4,6 +4,7 @@ import de.sideisra.securitydemo.exception.NotFoundException;
 import de.sideisra.securitydemo.model.ListOwner;
 import de.sideisra.securitydemo.model.TodoList;
 import de.sideisra.securitydemo.model.TodoListItem;
+import de.sideisra.securitydemo.model.TodoListItemCreate;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TodoListService {
@@ -29,10 +31,14 @@ public class TodoListService {
     return todoListRepo.getTodoList(id).orElseThrow(() -> todoListNotFound(id));
   }
 
-  public TodoListId createTodoList(final List<TodoListItem> items, final ListOwner owner) {
+  public TodoListId createTodoList(final String name, final List<TodoListItemCreate> items, final ListOwner owner) {
     final TodoListId id = TodoListId.newRandom();
-    todoListRepo.saveTodoList(new TodoList(id, owner, items));
+    todoListRepo.saveTodoList(new TodoList(id, name, owner, items.stream().map(this::newTodoListItem).collect(Collectors.toList())));
     return id;
+  }
+
+  private TodoListItem newTodoListItem(TodoListItemCreate toCreate) {
+    return new TodoListItem(TodoListItemId.newRandom(), toCreate.getValue(), toCreate.isDone());
   }
 
   public TodoListItemId addItem(final TodoListId id, final String value, final boolean done) {

@@ -12,20 +12,22 @@ import static java.util.stream.Collectors.toList;
 
 public class TodoList {
   private final TodoListId id;
+  private final String name;
   private final ListOwner owner;
   private final List<TodoListItem> items;
 
-  public TodoList(final TodoListId id, final ListOwner owner,
+  public TodoList(final TodoListId id, String name, final ListOwner owner,
                   final List<TodoListItem> items) {
     this.id = id;
+    this.name = name;
     this.owner = owner;
-    this.items = Collections.unmodifiableList(items);
+    this.items = items == null ? List.of() : Collections.unmodifiableList(items);
   }
 
   public TodoList addItem(final TodoListItem item) {
     final ArrayList<TodoListItem> newItems = new ArrayList<>(items);
     newItems.add(item);
-    return new TodoList(id, owner, newItems);
+    return new TodoList(id, name, owner, newItems);
   }
 
   public TodoList changeItem(TodoListItem changedItem) {
@@ -33,7 +35,7 @@ public class TodoList {
       .map(i -> i.getId().equals(changedItem.getId()) ? changedItem : i)
       .collect(toList());
     if (newItems.contains(changedItem)) {
-      return new TodoList(id, owner, newItems);
+      return new TodoList(id, name, owner, newItems);
     } else {
       throw new NotFoundException("Could not find item " + changedItem.getId() + " in tod list " + id);
     }
@@ -41,6 +43,10 @@ public class TodoList {
 
   public TodoListId getId() {
     return id;
+  }
+
+  public String getName() {
+    return name;
   }
 
   public ListOwner getOwner() {
@@ -52,26 +58,26 @@ public class TodoList {
   }
 
   @Override
-  public boolean equals(final Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    final TodoList todoList = (TodoList) o;
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    TodoList todoList = (TodoList) o;
     return Objects.equals(id, todoList.id) &&
+      Objects.equals(name, todoList.name) &&
       Objects.equals(owner, todoList.owner) &&
       Objects.equals(items, todoList.items);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, owner, items);
+    return Objects.hash(id, name, owner, items);
   }
 
   @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder("TodoList{");
     sb.append("id=").append(id);
+    sb.append(", name='").append(name).append('\'');
     sb.append(", owner=").append(owner);
     sb.append(", items=").append(items);
     sb.append('}');
