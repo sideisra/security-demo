@@ -1,0 +1,8 @@
+.todolist-selected {
+    background-color: lightblue;
+}
+
+.todolist-entry {
+    cursor: pointer;
+}
+
