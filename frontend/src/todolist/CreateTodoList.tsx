@@ -2,7 +2,11 @@ import * as React from 'react'
 import {useState} from 'react'
 import * as api from "../api/Api";
 
-const CreateTodoList = () => {
+export interface CreateTodoListProps {
+  todoListCreated: () => void;
+}
+
+const CreateTodoList = (props: CreateTodoListProps) => {
   const [name, setName] = useState("");
   const [error, setError] = useState<string | undefined>(undefined);
 
@@ -15,7 +19,7 @@ const CreateTodoList = () => {
     api.createTodoList(name)
         .then(response => {
           setError(undefined);
-          //TODO propagate change
+          props.todoListCreated();
         })
         .catch(error => setError("Anlegen fehlgeschlagen!"));
   };

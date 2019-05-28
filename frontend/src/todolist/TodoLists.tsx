@@ -10,7 +10,7 @@ const TodoLists = () => {
   const [todoLists, setTodoLists] = useState<Model.TodoList[]>([]);
   const [selectedTodoListId, setSelectedTodoListId] = useState<Model.TodoListId | undefined>(undefined);
 
-  useEffect(() => {
+  let loadTodoLists = function () {
     api.getTodoLists()
         .then(result => {
           console.log(result);
@@ -20,13 +20,21 @@ const TodoLists = () => {
           }
         })
         .catch(error => console.log(error));
+  };
+  useEffect(() => {
+    loadTodoLists();
     return () => {
     }
   }, []);
 
+  const onTodoListCreated = () => {
+    console.log("reload");
+    loadTodoLists();
+  };
+
   return (
       <div>
-        <CreateTodoList/>
+        <CreateTodoList todoListCreated={onTodoListCreated}/>
         <div>
           {todoLists.map(todoList =>
               <h2 className={"todolist-entry" + (selectedTodoListId === todoList.id ? " todolist-selected" : "")}
