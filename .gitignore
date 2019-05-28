@@ -6,3 +6,7 @@ out
 
 # ide
 .idea
+
+# yarn, webpack, etc.
+*/node_modules
+*/build

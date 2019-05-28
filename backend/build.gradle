@@ -10,6 +10,10 @@ repositories {
   jcenter()
 }
 
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
+}
+
 dependencies {
   compile group: 'org.springframework.boot', name: 'spring-boot-starter-web'
 //  compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
