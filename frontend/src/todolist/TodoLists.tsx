@@ -10,10 +10,9 @@ const TodoLists = () => {
   const [todoLists, setTodoLists] = useState<Model.TodoList[]>([]);
   const [selectedTodoListId, setSelectedTodoListId] = useState<Model.TodoListId | undefined>(undefined);
 
-  let loadTodoLists = function () {
+  const loadTodoLists = function () {
     api.getTodoLists()
         .then(result => {
-          console.log(result);
           if (result && result.response) {
             const fetchedTodoLists: Model.TodoList[] = result.response.data;
             setTodoLists(fetchedTodoLists);
@@ -28,8 +27,21 @@ const TodoLists = () => {
   }, []);
 
   const onTodoListCreated = () => {
-    console.log("reload");
     loadTodoLists();
+  };
+
+  const onReloadTodoList = (id: Model.TodoListId) => {
+    api.getTodoList(id)
+        .then(result => {
+          return setTodoLists(todoLists.map(list => {
+            if (result && result.response && list.id === id) {
+              return result.response.data;
+            } else {
+              return list;
+            }
+          }));
+        })
+        .catch(error => console.log(error))
   };
 
   return (
@@ -42,7 +54,7 @@ const TodoLists = () => {
                   key={todoList.id}>{todoList.name}</h2>
           )}
         </div>
-        <TodoList todoList={todoLists.find(list => list.id === selectedTodoListId)}/>
+        <TodoList todoList={todoLists.find(list => list.id === selectedTodoListId)} reloadTodoList={onReloadTodoList}/>
       </div>
   );
 };
