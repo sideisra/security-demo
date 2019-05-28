@@ -19,6 +19,18 @@ public class SecurityDemoUserDetails implements UserDetails {
   private String email;
   private Set<GrantedAuthority> authorities = Set.of();
 
+  public SecurityDemoUserDetails() {
+  }
+
+  public SecurityDemoUserDetails(final String username, final String surname, final String forename, final String email,
+      final Set<GrantedAuthority> authorities) {
+    this.username = username;
+    this.surname = surname;
+    this.forename = forename;
+    this.email = email;
+    this.authorities = authorities;
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return authorities;

@@ -15,24 +15,33 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Test for {@link TodoListService}.
  */
 public class TodoListServiceTest {
 
-  private static final ListOwner LIST_OWNER = new ListOwner("test@test.local", "Test", "Local");
+  private static final ListOwner LIST_OWNER_1 = new ListOwner("test@test.local", "Test", "Local");
+  private static final ListOwner LIST_OWNER_2 = new ListOwner("test-2@test.local", "Test 2", "Local 2");
 
   private final TodoListRepo todoListRepo = mock(TodoListRepo.class);
 
   private final TodoListService cut = new TodoListService(todoListRepo);
 
   @Test
+  public void shouldReturnAllTodoListsOfGivenOwner() {
+    final TodoList todoList1 = new TodoList(TodoListId.newRandom(), "my list 1", LIST_OWNER_1, List.of());
+    final TodoList todoList2 = new TodoList(TodoListId.newRandom(), "my list 2", LIST_OWNER_2, List.of());
+    when(todoListRepo.getTodoListsByOwner(LIST_OWNER_1)).thenReturn(List.of(todoList1));
+    when(todoListRepo.getTodoListsByOwner(LIST_OWNER_2)).thenReturn(List.of(todoList2));
+
+    assertThat(cut.getTodoListsByOwner(LIST_OWNER_1)).containsExactly(todoList1);
+  }
+
+  @Test
   public void shouldReturnTodoListWithGivenId() {
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of());
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER_1, List.of());
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     assertThat(cut.getTodoList(todoList.getId())).isEqualTo(todoList);
@@ -49,7 +58,7 @@ public class TodoListServiceTest {
   @Test
   public void shouldSaveNewTodoListWithNewItem() {
     final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of(oldItem));
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER_1, List.of(oldItem));
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
@@ -63,7 +72,8 @@ public class TodoListServiceTest {
 
     final TodoList capturedTodoList = todoListArgumentCaptor.getValue();
     assertThat(capturedTodoList).isNotSameAs(todoList);
-    assertThat(capturedTodoList.getItems()).containsExactly(oldItem, new TodoListItem(newItemId, newItemValue, newItemDone));
+    assertThat(capturedTodoList.getItems())
+        .containsExactly(oldItem, new TodoListItem(newItemId, newItemValue, newItemDone));
   }
 
   @Test
@@ -77,7 +87,7 @@ public class TodoListServiceTest {
   @Test
   public void shouldSaveNewTodoListWithChangedItem() {
     final TodoListItem oldItem = new TodoListItem(TodoListItemId.newRandom(), "old item", false);
-    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER, List.of(oldItem));
+    final TodoList todoList = new TodoList(TodoListId.newRandom(), "my list", LIST_OWNER_1, List.of(oldItem));
     when(todoListRepo.getTodoList(todoList.getId())).thenReturn(Optional.of(todoList));
 
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
@@ -107,7 +117,7 @@ public class TodoListServiceTest {
     final ArgumentCaptor<TodoList> todoListArgumentCaptor = ArgumentCaptor.forClass(TodoList.class);
     doNothing().when(todoListRepo).saveTodoList(todoListArgumentCaptor.capture());
 
-    final TodoListId newId = cut.createTodoList("my-list", List.of(itemCreate), LIST_OWNER);
+    final TodoListId newId = cut.createTodoList("my-list", List.of(itemCreate), LIST_OWNER_1);
 
     assertThat(newId).isNotNull();
     final TodoList capturedTodoList = todoListArgumentCaptor.getValue();
