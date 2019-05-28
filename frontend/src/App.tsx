@@ -10,16 +10,14 @@ const App: React.FC = () => {
 
   return (
       <div className="App">
-        <header className="App-header">
-          <AuthContext.Provider
-              value={{
-                authenticated,
-                email: idTokenParsed && (idTokenParsed as any).email,
-              }}
-          >
-            <TodoLists/>
-          </AuthContext.Provider>
-        </header>
+        <AuthContext.Provider
+            value={{
+              authenticated,
+              email: idTokenParsed && (idTokenParsed as any).email,
+            }}
+        >
+          <TodoLists/>
+        </AuthContext.Provider>
       </div>
   );
 };
