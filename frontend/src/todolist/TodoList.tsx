@@ -1,8 +1,8 @@
 import * as React from 'react'
 import {Model} from "../model";
 
-export type TodoListProps = {
-    readonly todoList?: Model.TodoList;
+interface TodoListProps {
+    todoList?: Model.TodoList
 }
 
 const TodoList = (props: TodoListProps) => {
@@ -13,7 +13,7 @@ const TodoList = (props: TodoListProps) => {
                 ? <ul>
                     {todoList.items.map(i => <li>{i.value}</li>)}
                 </ul>
-                : <div>keine Daten</div>
+                : <div>keine Todo Liste ausgewählt</div>
             }
         </div>
     );
