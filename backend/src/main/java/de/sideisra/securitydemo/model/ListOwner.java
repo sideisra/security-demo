@@ -1,5 +1,7 @@
 package de.sideisra.securitydemo.model;
 
+import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
+
 import java.util.Objects;
 
 public class ListOwner {
@@ -11,6 +13,10 @@ public class ListOwner {
     this.eMail = eMail;
     this.firstName = firstName;
     this.lastName = lastName;
+  }
+
+  public static ListOwner fromUserDetails(final SecurityDemoUserDetails user) {
+    return new ListOwner(user.getEmail(), user.getForename(), user.getSurname());
   }
 
   public String geteMail() {

@@ -1,0 +1,9 @@
+{
+  "realm": "security-demo",
+  "url": "http://localhost:8181/auth",
+  "ssl-required": "external",
+  "resource": "security-demo-frontend",
+  "clientId": "security-demo-frontend",
+  "public-client": true,
+  "confidential-port": 0
+}

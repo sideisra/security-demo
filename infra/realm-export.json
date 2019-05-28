@@ -285,12 +285,44 @@
   "otpPolicyPeriod" : 30,
   "otpSupportedApplications" : [ "FreeOTP", "Google Authenticator" ],
   "users" : [ {
+    "id" : "f38ef5f3-672d-4655-98aa-997bd32a8aff",
+    "createdTimestamp" : 1559043214673,
+    "username" : "alice",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : false,
+    "firstName" : "Alice",
+    "lastName" : "Secure",
+    "email" : "alice@security-demo.local",
+    "credentials" : [ {
+      "type" : "password",
+      "hashedSaltedValue" : "e+JIm05HWZXzyteojVVOGnrilUBIz72/nHkzEuCqqYU8ED8mvEvyus1pzo3IlZhgYlshftwLxld/qSmw3LBdzA==",
+      "salt" : "2yS43By1+KqwinOoi2OmBA==",
+      "hashIterations" : 27500,
+      "counter" : 0,
+      "algorithm" : "pbkdf2-sha256",
+      "digits" : 0,
+      "period" : 0,
+      "createdDate" : 1559043223599,
+      "config" : { }
+    } ],
+    "disableableCredentialTypes" : [ "password" ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "TodoListUser", "offline_access", "uma_authorization" ],
+    "clientRoles" : {
+      "account" : [ "view-profile", "manage-account" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  }, {
     "id" : "91f233ac-265f-422c-980a-27022ea57f03",
     "createdTimestamp" : 1551702333386,
     "username" : "bob",
     "enabled" : true,
     "totp" : false,
     "emailVerified" : true,
+    "firstName" : "Bob",
+    "lastName" : "Secure",
     "email" : "bob@security-demo.local",
     "credentials" : [ {
       "type" : "password",

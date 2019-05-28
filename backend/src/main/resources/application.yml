@@ -1,2 +1,9 @@
 server:
   port: 8080
+
+security:
+  oauth2:
+    resource:
+      jwk:
+        key-set-uri: http://localhost:8181/auth/realms/security-demo/protocol/openid-connect/certs
+      id: security-demo-backend
