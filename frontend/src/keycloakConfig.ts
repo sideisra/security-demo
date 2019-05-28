@@ -20,11 +20,18 @@ const createKeycloak = () => {
   return keycloakConfig ? Keycloak(keycloakConfig) : undefined
 };
 
-export const useKeycloak = () => {
+export interface UseKeycloakResult {
+  idTokenParsed?: KeycloakTokenParsed;
+  kcInstance?: Keycloak.KeycloakInstance;
+}
+
+export const useKeycloak = (): UseKeycloakResult => {
   const [idTokenParsed, setIdTokenParsed] = useState<KeycloakTokenParsed | undefined>(undefined);
+  const [kcInstance, setKcInstance] = useState<Keycloak.KeycloakInstance | undefined>(undefined);
   useEffect(() => {
     const keycloak = createKeycloak();
     if (keycloak) {
+      setKcInstance(keycloak);
       keycloak
           .init({onLoad: 'check-sso', checkLoginIframe: true})
           .success(authenticated => {
@@ -66,5 +73,8 @@ export const useKeycloak = () => {
       //TODO set error state
     }
   }, []); // only once, see: https://reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect
-  return idTokenParsed
+  return {
+    idTokenParsed,
+    kcInstance,
+  }
 };

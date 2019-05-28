@@ -2,20 +2,23 @@ import React from 'react';
 import './App.css';
 import TodoLists from "./todolist/TodoLists";
 import {AuthContext} from './AuthContext'
-import {useKeycloak} from "./keycloakConfig";
+import {useKeycloak, UseKeycloakResult} from "./keycloakConfig";
 
 const App: React.FC = () => {
-  const idTokenParsed = useKeycloak();
-  const authenticated: boolean = !!idTokenParsed;
+  const useKeycloakResult: UseKeycloakResult = useKeycloak();
+  const authenticated: boolean = !!useKeycloakResult.idTokenParsed;
 
   return (
       <div className="App">
         <AuthContext.Provider
             value={{
               authenticated,
-              email: idTokenParsed && (idTokenParsed as any).email,
+              email: useKeycloakResult.idTokenParsed && (useKeycloakResult.idTokenParsed as any).email,
             }}
         >
+          <button type="button"
+                  onClick={() => useKeycloakResult.kcInstance && useKeycloakResult.kcInstance.logout()}>Logout
+          </button>
           <TodoLists/>
         </AuthContext.Provider>
       </div>
