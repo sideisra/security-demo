@@ -27,8 +27,12 @@ const CreateTodoList = (props: CreateTodoListProps) => {
   return (
       <div>
         <form onSubmit={onCreateTodoList}>
-          <input type="text" onChange={onNameChange} value={name}/>
-          <button type="submit">Create TodoList</button>
+          <div className="input-group form-group">
+            <input type="text" className="form-control" id="name"
+                   placeholder="Name" onChange={onNameChange}>
+            </input>
+          </div>
+          <button type="submit" className="btn btn-primary btn-block">Create TodoList</button>
           {error && <div>{error}</div>}
         </form>
       </div>
