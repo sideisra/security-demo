@@ -26,6 +26,7 @@ public class TodoListController {
   @RolesAllowed(UserRoles.TODO_LIST_USER)
   public Collection<TodoList> getTodoListsByOwner(@AuthenticationPrincipal final SecurityDemoUserDetails user) {
     final ListOwner owner = ListOwner.fromUserDetails(user);
+    System.out.println(owner);
     return todoListService.getTodoListsByOwner(owner);
   }
 
