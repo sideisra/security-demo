@@ -1,11 +1,3 @@
-.todolist-selected {
-    background-color: lightblue;
-}
-
 .todolist-entry {
     cursor: pointer;
-    border: 2px solid #dddddd;
-    margin-bottom: 7px;
-    border-radius: 3px;
-    min-width: 200px;
 }

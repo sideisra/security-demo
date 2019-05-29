@@ -5,6 +5,9 @@ import * as api from "../api/Api";
 import './TodoLists.css';
 import TodoList from "./TodoList";
 import CreateTodoList from "./CreateTodoList";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import ListGroup from "react-bootstrap/ListGroup";
 
 const TodoLists = () => {
   const [todoLists, setTodoLists] = useState<Model.TodoList[]>([]);
@@ -45,17 +48,32 @@ const TodoLists = () => {
   };
 
   return (
-      <div>
-        <CreateTodoList todoListCreated={onTodoListCreated}/>
-        <div>
-          {todoLists.map(todoList =>
-              <h2 className={"todolist-entry" + (selectedTodoListId === todoList.id ? " todolist-selected" : "")}
-                  onClick={() => setSelectedTodoListId(todoList.id)}
-                  key={todoList.id}>{todoList.name}</h2>
-          )}
-        </div>
-        <TodoList todoList={todoLists.find(list => list.id === selectedTodoListId)} reloadTodoList={onReloadTodoList}/>
-      </div>
+      <>
+        <Row>
+          <Col>
+            <CreateTodoList todoListCreated={onTodoListCreated}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <ListGroup>
+              {todoLists.map(todoList =>
+                  <ListGroup.Item
+                      className={"todolist-entry"}
+                      active={selectedTodoListId === todoList.id}
+                      onClick={() => setSelectedTodoListId(todoList.id)}
+                      key={todoList.id}>{todoList.name}</ListGroup.Item>
+              )}
+            </ListGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <TodoList todoList={todoLists.find(list => list.id === selectedTodoListId)}
+                      reloadTodoList={onReloadTodoList}/>
+          </Col>
+        </Row>
+      </>
   );
 };
 

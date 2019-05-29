@@ -5,6 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import {HTTP_UNAUTHORIZED, TOKEN_STORAGE_KEY} from "./keycloakConstants";
 import axios from "axios";
+import 'bootstrap/dist/css/bootstrap.css';
 
 axios.interceptors.request.use((config) => {
   const token = sessionStorage.getItem(TOKEN_STORAGE_KEY);

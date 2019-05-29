@@ -1,6 +1,11 @@
 import * as React from 'react'
 import {useState} from 'react'
 import * as api from "../api/Api";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
+import Alert from "react-bootstrap/Alert";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 export interface CreateTodoListProps {
   todoListCreated: () => void;
@@ -25,17 +30,19 @@ const CreateTodoList = (props: CreateTodoListProps) => {
   };
 
   return (
-      <div>
-        <form onSubmit={onCreateTodoList}>
-          <div className="input-group form-group">
-            <input type="text" className="form-control" id="name"
-                   placeholder="Name" onChange={onNameChange}>
-            </input>
-          </div>
-          <button type="submit" className="btn btn-primary btn-block">Create TodoList</button>
-          {error && <div>{error}</div>}
-        </form>
-      </div>
+      <Form onSubmit={onCreateTodoList}>
+        <Form.Row>
+          <Col>
+            <Form.Control onChange={onNameChange} type="text" placeholder="Neue Liste..."/>
+          </Col>
+          <Col>
+            <Button variant="primary" type="submit">
+              Create
+            </Button>
+          </Col>
+        </Form.Row>
+        {error && <Alert variant="danger">{error}</Alert>}
+      </Form>
   );
 };
 
