@@ -16,22 +16,27 @@ const TodoList = (props: TodoListProps) => {
     props.reloadTodoList(props.todoList!.id);
   };
 
+  const onDoneClick = (item: Model.TodoListItem) => {
+    console.log("toggle done of item " + JSON.stringify(item));
+  };
+
   return (
       <div>
         {todoList
             ? <div>
               {todoList.items && todoList.items.length > 0
-                  ? todoList.items.map(i => {
-                    return (
-                        <ul className="fa-ul">
-                          <li key={i.id}>
-                            <span className="fa-li"><FontAwesomeIcon
+                  ? (
+                      <ul className="fa-ul">
+                        {todoList.items.map(i => {
+                          return (
+                              <li key={i.id}>
+                            <span onClick={() => onDoneClick(i)} className="fa-li"><FontAwesomeIcon
                                 icon={i.done ? faCheckCircle : faCircle}/></span> {i.value}
-                          </li>
-                        </ul>
-                    )
-                        ;
-                  })
+                              </li>
+                          );
+                        })}
+                      </ul>
+                  )
                   : <div>keine Todos :-)</div>
               }
               <CreateTodoListItem todoListId={props.todoList!.id} todoListItemCreated={onTodoListItemCreated}/>
