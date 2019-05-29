@@ -1,6 +1,8 @@
 import * as React from 'react'
 import {Model} from "../model";
 import CreateTodoListItem from "./CreateTodoListItem";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faCheckCircle, faCircle} from "@fortawesome/free-regular-svg-icons";
 
 interface TodoListProps {
   todoList?: Model.TodoList;
@@ -18,12 +20,20 @@ const TodoList = (props: TodoListProps) => {
       <div>
         {todoList
             ? <div>
-              <ul>
-                {todoList.items && todoList.items.length > 0
-                    ? todoList.items.map(i => <li key={i.id}>{i.value}</li>)
-                    : <div>keine Todos :-)</div>
-                }
-              </ul>
+              {todoList.items && todoList.items.length > 0
+                  ? todoList.items.map(i => {
+                    return (
+                        <ul className="fa-ul">
+                          <li key={i.id}>
+                            <span className="fa-li"><FontAwesomeIcon
+                                icon={i.done ? faCheckCircle : faCircle}/></span> {i.value}
+                          </li>
+                        </ul>
+                    )
+                        ;
+                  })
+                  : <div>keine Todos :-)</div>
+              }
               <CreateTodoListItem todoListId={props.todoList!.id} todoListItemCreated={onTodoListItemCreated}/>
             </div>
             : <div>keine Todo Liste ausgewählt</div>

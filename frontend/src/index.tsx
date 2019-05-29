@@ -6,6 +6,10 @@ import * as serviceWorker from './serviceWorker';
 import {HTTP_UNAUTHORIZED, TOKEN_STORAGE_KEY} from "./keycloakConstants";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.css';
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {faCheckCircle, faCircle} from "@fortawesome/free-regular-svg-icons";
+
+library.add(faCircle, faCheckCircle);
 
 axios.interceptors.request.use((config) => {
   const token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
