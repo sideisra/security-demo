@@ -34,9 +34,9 @@ const App: React.FC = () => {
                   <Col md="auto">
                     My Todo Lists
                   </Col>
-                  <Col className="justify-content-end">
+                  <Col className="user-info">
                     {user && user.firstName + " " + user.lastName}
-                    <Button type="button" variant="secondary"
+                    <Button className="btn-logout" type="button" variant="secondary"
                             onClick={() => useKeycloakResult.kcInstance && useKeycloakResult.kcInstance.logout()}>Logout
                     </Button>
                   </Col>

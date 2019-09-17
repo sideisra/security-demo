@@ -1,7 +1,7 @@
-.App {
-  text-align: center;
+.user-info {
+    text-align: end;
 }
 
-.App-link {
-  color: #61dafb;
+.btn-logout {
+    margin-left: 20px;
 }

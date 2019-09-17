@@ -30,8 +30,9 @@ const TodoList = (props: TodoListProps) => {
                         {todoList.items.map(i => {
                           return (
                               <li key={i.id}>
-                            <span onClick={() => onDoneClick(i)} className="fa-li"><FontAwesomeIcon
-                                icon={i.done ? faCheckCircle : faCircle}/></span> {i.value}
+                                <span onClick={() => onDoneClick(i)} className="fa-li"><FontAwesomeIcon
+                                    icon={i.done ? faCheckCircle : faCircle}/></span>
+                                {i.value}
                               </li>
                           );
                         })}
