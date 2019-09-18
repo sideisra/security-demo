@@ -3,18 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "keycloak-admin": "^1.10.0",
-    "keycloak-js": "6.0.1",
-    "ts-node": "^8.1.0",
-    "typescript": "^3.4.3",
-    "wait-on": "^3.2.0"
+    "keycloak-admin": "^1.12.0",
+    "keycloak-js": "7.0.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3",
+    "wait-on": "^3.3.0"
   },
   "scripts": {
-    "start": "docker run --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -e DB_VENDOR=H2 jboss/keycloak:6.0.1 && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
+    "start": "docker run --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -e DB_VENDOR=H2 jboss/keycloak:7.0.0 && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
     "initKeycloak": "ts-node scripts/initKeycloak",
     "stop": "docker stop keycloak"
   },
   "devDependencies": {
-    "@types/node": "^11.13.4"
+    "@types/node": "^12.7.5"
   }
 }
