@@ -106,3 +106,20 @@ openssl rsa \
 
 # print certificate
 #openssl x509 -in root/root-ca.crt.pem -text
+
+echo
+echo "========================================"
+echo "transform root certificate to der format"
+echo "========================================"
+echo
+openssl x509 -outform der -in root/root-ca.crt.pem -out root/root-ca.crt.der
+
+echo
+echo "============================================"
+echo "import root certificate into a java keystore"
+echo "============================================"
+echo
+keytool -import -alias my-root-ca -keystore backend/keystore.jks -file root/root-ca.crt.der -storepass changeme -noprompt
+
+# print keystore certs
+#keytool -list -keystore backend/keystore.jks -storepass changeme
