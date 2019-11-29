@@ -119,7 +119,7 @@ echo "============================================"
 echo "import root certificate into a java keystore"
 echo "============================================"
 echo
-keytool -import -alias my-root-ca -keystore backend/keystore.jks -file root/root-ca.crt.der -storepass changeme -noprompt
+keytool -import -alias my-root-ca -keystore root/keystore.jks -file root/root-ca.crt.der -storepass changeme -noprompt
 
 # print keystore certs
 #keytool -list -keystore backend/keystore.jks -storepass changeme
