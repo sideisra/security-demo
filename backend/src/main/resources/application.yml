@@ -2,9 +2,8 @@ server:
   port: 8443
   ssl:
     key-store-type: PKCS12
-    key-store: classpath:keystore/backend.p12
+    key-store: classpath:keystore/certAndKey.p12
     key-store-password: password
-    key-alias: sdbackend
 security:
   oauth2:
     resource:

@@ -108,6 +108,23 @@ openssl rsa \
 #openssl x509 -in root/root-ca.crt.pem -text
 
 echo
+echo "=============================================================="
+echo "package backend private key and cert into a PKCS Keystore file"
+echo "=============================================================="
+echo
+# pkcs12 - The pkcs12 command allows PKCS#12 files (sometimes referred to as PFX files) to be created and parsed
+# -export This option specifies that a PKCS#12 file will be created rather than parsed.
+openssl pkcs12 -export -in backend/cert.pem -inkey backend/privkey.pem -certfile root/root-ca.crt.pem -name "localhost" -out backend/certAndKey.p12 -passout pass:password
+
+echo
+echo "==============================================================="
+echo "transform backend certificate in PKCS Keystore to Java Keystore"
+echo "==============================================================="
+echo
+#
+keytool -importkeystore -deststorepass password -destkeystore backend/keystore.jks -srckeystore [filename-new-PKCS-12.p12] -srcstoretype PKCS12
+
+echo
 echo "========================================"
 echo "transform root certificate to der format"
 echo "========================================"
