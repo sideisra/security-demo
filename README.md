@@ -21,3 +21,9 @@ gradlew bootRun
 cd client
 gradlew run
 ```
+## renew backend certificate
+Generates a new backend certificate. Client can still connect to the backend after that because it trusts the root ca.
+```
+cd certs
+renew_backend_cert.sh
+```
