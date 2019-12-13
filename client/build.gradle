@@ -1,0 +1,26 @@
+plugins {
+  id 'java'
+  id 'application'
+}
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+wrapper {
+  distributionType = Wrapper.DistributionType.ALL
+}
+
+ext {
+  javaMainClass = "de.sideisra.securitydemo.Client"
+}
+
+application {
+  mainClassName = javaMainClass
+  applicationDefaultJvmArgs = [
+      '-Djavax.net.ssl.trustStore=truststore.p12',
+      '-Djavax.net.ssl.trustStorePassword=changeme',
+      '-Djavax.net.ssl.trustStoreType=PKCS12']
+}

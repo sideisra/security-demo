@@ -1,3 +1,15 @@
+echo
+echo "======="
+echo "cleanup"
+echo "======="
+echo
+rm ../backend/src/main/resources/keystore/certAndKey.p12
+rm ../client/truststore.p12
+rm -r backend
+rm -r root
+mkdir backend
+mkdir root
+
 # see: https://superuser.com/questions/126121/how-to-create-my-own-certificate-chain
 echo
 echo "==========================="
@@ -62,7 +74,7 @@ echo
 openssl req -new \
 -key backend/privkey.pem \
 -out backend/csr.pem \
--subj "/C=DE/ST=Saxony/L=Dresden/O=OSP GmbH/CN=backend.example.com"
+-subj "/C=DE/ST=Saxony/L=Dresden/O=OSP GmbH/CN=localhost"
 # output: Signing Request fÃ¼r das Backend Zertifkat: backend/csr.pem
 # Format: The PEM form is the default format: it consists of the DER format base64 encoded with additional header and footer lines.
 
@@ -115,14 +127,7 @@ echo
 # pkcs12 - The pkcs12 command allows PKCS#12 files (sometimes referred to as PFX files) to be created and parsed
 # -export This option specifies that a PKCS#12 file will be created rather than parsed.
 openssl pkcs12 -export -in backend/cert.pem -inkey backend/privkey.pem -certfile root/root-ca.crt.pem -name "localhost" -out backend/certAndKey.p12 -passout pass:password
-
-echo
-echo "==============================================================="
-echo "transform backend certificate in PKCS Keystore to Java Keystore"
-echo "==============================================================="
-echo
-#
-keytool -importkeystore -deststorepass password -destkeystore backend/keystore.jks -srckeystore [filename-new-PKCS-12.p12] -srcstoretype PKCS12
+cp backend/certAndKey.p12 ../backend/src/main/resources/keystore/certAndKey.p12
 
 echo
 echo "========================================"
@@ -136,7 +141,8 @@ echo "============================================"
 echo "import root certificate into a java keystore"
 echo "============================================"
 echo
-keytool -import -alias my-root-ca -keystore root/keystore.jks -file root/root-ca.crt.der -storepass changeme -noprompt
+keytool -import -alias my-root-ca -keystore root/truststore.p12 -file root/root-ca.crt.der -storepass changeme -noprompt -storetype PKCS12
+cp root/truststore.p12 ../client/truststore.p12
 
 # print keystore certs
 #keytool -list -keystore backend/keystore.jks -storepass changeme
