@@ -27,3 +27,13 @@ Generates a new backend certificate. Client can still connect to the backend aft
 cd certs
 renew_backend_cert.sh
 ```
+
+#Java Security Manager
+## sources
+* https://docs.oracle.com/javase/8/docs/technotes/guides/security/troubleshooting-security.html
+## Start app with SecurityManager Policy
+```
+-Djava.security.manager
+-Djava.security.policy==BackendPermissions.policy
+-Djava.security.debug=access
+```
