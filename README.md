@@ -36,4 +36,16 @@ renew_backend_cert.sh
 -Djava.security.manager
 -Djava.security.policy==BackendPermissions.policy
 -Djava.security.debug=access
+-Djdk.io.permissionsUseCanonicalPath=true
+```
+
+`-Djdk.io.permissionsUseCanonicalPath=true` is necessary otherwise the backend is not able to load the HTTPS Certificate:
+```
+Caused by: java.io.IOException: Failed to load keystore type [PKCS12] with path [file:/<path to keystore>/certAndKey.p12] due to [access denied ("java.io.FilePermission" "<java.io.tmpdir>\tomcat.3606642031625470347.8443\file:\<path to keystore>\certAndKey.p12" "read")]
+	at org.apache.tomcat.util.net.SSLUtilBase.getStore(SSLUtilBase.java:221) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.SSLHostConfigCertificate.getCertificateKeystore(SSLHostConfigCertificate.java:206) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.SSLUtilBase.getKeyManagers(SSLUtilBase.java:272) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.SSLUtilBase.createSSLContext(SSLUtilBase.java:239) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	at org.apache.tomcat.util.net.AbstractJsseEndpoint.createSSLContext(AbstractJsseEndpoint.java:97) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+
 ```
