@@ -37,15 +37,27 @@ renew_backend_cert.sh
 -Djava.security.policy==BackendPermissions.policy
 -Djava.security.debug=access
 -Djdk.io.permissionsUseCanonicalPath=true
+-Dsun.misc.URLClassPath.disableJarChecking=true
 ```
 
-`-Djdk.io.permissionsUseCanonicalPath=true` is necessary otherwise the backend is not able to load the HTTPS Certificate:
-```
-Caused by: java.io.IOException: Failed to load keystore type [PKCS12] with path [file:/<path to keystore>/certAndKey.p12] due to [access denied ("java.io.FilePermission" "<java.io.tmpdir>\tomcat.3606642031625470347.8443\file:\<path to keystore>\certAndKey.p12" "read")]
-	at org.apache.tomcat.util.net.SSLUtilBase.getStore(SSLUtilBase.java:221) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
-	at org.apache.tomcat.util.net.SSLHostConfigCertificate.getCertificateKeystore(SSLHostConfigCertificate.java:206) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
-	at org.apache.tomcat.util.net.SSLUtilBase.getKeyManagers(SSLUtilBase.java:272) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
-	at org.apache.tomcat.util.net.SSLUtilBase.createSSLContext(SSLUtilBase.java:239) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
-	at org.apache.tomcat.util.net.AbstractJsseEndpoint.createSSLContext(AbstractJsseEndpoint.java:97) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+* `-Djdk.io.permissionsUseCanonicalPath=true`
 
-```
+    Necessary otherwise the backend is not able to load the HTTPS Certificate:
+    ```
+    Caused by: java.io.IOException: Failed to load keystore type [PKCS12] with path [file:/<path to keystore>/certAndKey.p12] due to [access denied ("java.io.FilePermission" "<java.io.tmpdir>\tomcat.3606642031625470347.8443\file:\<path to keystore>\certAndKey.p12" "read")]
+	    at org.apache.tomcat.util.net.SSLUtilBase.getStore(SSLUtilBase.java:221) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	    at org.apache.tomcat.util.net.SSLHostConfigCertificate.getCertificateKeystore(SSLHostConfigCertificate.java:206) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	    at org.apache.tomcat.util.net.SSLUtilBase.getKeyManagers(SSLUtilBase.java:272) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	    at org.apache.tomcat.util.net.SSLUtilBase.createSSLContext(SSLUtilBase.java:239) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+	    at org.apache.tomcat.util.net.AbstractJsseEndpoint.createSSLContext(AbstractJsseEndpoint.java:97) ~[tomcat-embed-core-9.0.19.jar:9.0.19]
+    ```
+
+* `-Dsun.misc.URLClassPath.disableJarChecking=true`
+
+    Necessary as long as https://github.com/spring-projects/spring-boot/issues/17796 is not fixed.
+    ```
+    Caused by: java.lang.ClassNotFoundException: de.sideisra.securitydemo.config.WebSecurityConfig
+            at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:471) ~[na:na]
+            at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:588) ~[na:na]
+            at org.springframework.boot.loader.LaunchedURLClassLoader.loadClass(LaunchedURLClassLoader.java:92) ~[backend.jar:na]
+    ```
