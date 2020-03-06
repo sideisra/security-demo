@@ -1,7 +1,8 @@
 package de.sideisra.securitydemo.model;
 
-import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
+import java.util.Map;
 import java.util.Objects;
 
 public class ListOwner {
@@ -15,8 +16,12 @@ public class ListOwner {
     this.lastName = lastName;
   }
 
-  public static ListOwner fromUserDetails(final SecurityDemoUserDetails user) {
-    return new ListOwner(user.getEmail(), user.getForename(), user.getSurname());
+  public static ListOwner fromUserDetails(final JwtAuthenticationToken authentication) {
+    final Map<String, Object> attributes = authentication.getTokenAttributes();
+    return new ListOwner(
+        (String) attributes.get("email"),
+        (String) attributes.get("family_name"),
+        (String) attributes.get("given_name"));
   }
 
   public String geteMail() {

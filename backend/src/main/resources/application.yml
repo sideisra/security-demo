@@ -4,9 +4,14 @@ server:
     key-store-type: PKCS12
     key-store: classpath:keystore/certAndKey.p12
     key-store-password: password
-security:
-  oauth2:
-    resource:
-      jwk:
-        key-set-uri: http://localhost:8181/auth/realms/security-demo/protocol/openid-connect/certs
-      id: security-demo-backend
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8181/auth/realms/security-demo
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO

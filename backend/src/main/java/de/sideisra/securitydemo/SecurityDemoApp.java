@@ -20,7 +20,6 @@ public class SecurityDemoApp {
     ////    });
     //    Policy.setPolicy(new PolicyFile());
     //    System.setSecurityManager(new SecurityManager());
-    System.getProperties().forEach((key, value) -> System.out.println(key + " -> " + value));
     new SpringApplication(SecurityDemoApp.class).run(args);
   }
 }
