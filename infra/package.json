@@ -10,9 +10,9 @@
     "wait-on": "^3.3.0"
   },
   "scripts": {
-    "start": "docker run --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -e DB_VENDOR=H2 jboss/keycloak:7.0.0 && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
+    "start": "docker network create security-demo && docker run --network security-demo --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_USER=admin -e KEYCLOAK_PASSWORD=admin -e DB_VENDOR=H2 jboss/keycloak:7.0.0 && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
     "initKeycloak": "ts-node scripts/initKeycloak",
-    "stop": "docker stop keycloak"
+    "stop": "docker stop keycloak && docker network rm security-demo"
   },
   "devDependencies": {
     "@types/node": "^12.7.5"

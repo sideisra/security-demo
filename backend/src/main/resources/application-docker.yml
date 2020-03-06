@@ -1,0 +1,6 @@
+security:
+  oauth2:
+    resource:
+      jwk:
+        key-set-uri: http://keycloak:8080/auth/realms/security-demo/protocol/openid-connect/certs
+      id: security-demo-backend
