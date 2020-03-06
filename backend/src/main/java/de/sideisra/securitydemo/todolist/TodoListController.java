@@ -25,7 +25,6 @@ public class TodoListController {
   @RolesAllowed(UserRoles.TODO_LIST_USER)
   public Collection<TodoList> getTodoListsByOwner(JwtAuthenticationToken authentication) {
     final ListOwner owner = ListOwner.fromUserDetails(authentication);
-    System.out.println(owner);
     return todoListService.getTodoListsByOwner(owner);
   }
 
@@ -67,8 +66,11 @@ public class TodoListController {
 
   @PutMapping("/{todoListId}/items/{itemId}")
   @RolesAllowed(UserRoles.TODO_LIST_USER)
-  public void changeItem(@PathVariable final TodoListId todoListId, @PathVariable final TodoListItemId itemId,
-      @RequestBody final TodoListItem changedItem, JwtAuthenticationToken authentication) {
+  public void changeItem(
+      @PathVariable final TodoListId todoListId,
+      @PathVariable final TodoListItemId itemId,
+      @RequestBody final TodoListItem changedItem,
+      JwtAuthenticationToken authentication) {
     if (!itemId.equals(changedItem.getId())) {
       throw new IllegalArgumentException(
           "Item id in path (" + itemId + ") does not match item id in body (" + changedItem.getId() + ")");

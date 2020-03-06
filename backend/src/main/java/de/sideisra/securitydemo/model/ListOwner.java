@@ -20,8 +20,9 @@ public class ListOwner {
     final Map<String, Object> attributes = authentication.getTokenAttributes();
     return new ListOwner(
         (String) attributes.get("email"),
-        (String) attributes.get("family_name"),
-        (String) attributes.get("given_name"));
+        (String) attributes.get("given_name"),
+        (String) attributes.get("family_name")
+    );
   }
 
   public String geteMail() {

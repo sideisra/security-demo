@@ -4,11 +4,11 @@ import de.sideisra.securitydemo.exception.AccessDeniedException;
 import de.sideisra.securitydemo.model.*;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
-import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
 import org.junit.Test;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,15 +17,15 @@ import static org.mockito.Mockito.when;
 
 public class TodoListControllerTest {
   private static final ListOwner LIST_OWNER_1 = new ListOwner("test@test.local", "Test", "Local");
-  private static final SecurityDemoUserDetails USER_1 = new SecurityDemoUserDetails(
-      LIST_OWNER_1.geteMail(), LIST_OWNER_1.getLastName(), LIST_OWNER_1.getFirstName(),
-      LIST_OWNER_1.geteMail(), Set.of());
+  private static final JwtAuthenticationToken USER_1 = mockToken(
+      LIST_OWNER_1.geteMail(), LIST_OWNER_1.getLastName(), LIST_OWNER_1.getFirstName()
+  );
 
   private static final ListOwner LIST_OWNER_2 = new ListOwner("test-2@test.local", "Test 2", "Local 2");
-  private static final SecurityDemoUserDetails USER_2 = new SecurityDemoUserDetails(
-      LIST_OWNER_2.geteMail(), LIST_OWNER_2.getLastName(), LIST_OWNER_2.getFirstName(),
-      LIST_OWNER_2.geteMail(), Set.of());
 
+  private static final JwtAuthenticationToken USER_2 = mockToken(
+      LIST_OWNER_2.geteMail(), LIST_OWNER_2.getLastName(), LIST_OWNER_2.getFirstName()
+  );
   private final TodoListService todoListService = mock(TodoListService.class);
 
   private final TodoListController cut = new TodoListController(todoListService);
@@ -99,5 +99,16 @@ public class TodoListControllerTest {
 
     assertThatThrownBy(() -> cut.changeItem(todoListId, otherItemId, changedTodoListItem, USER_1))
         .isInstanceOf(IllegalArgumentException.class);
+  }
+
+  private static JwtAuthenticationToken mockToken(final String eMail, final String lastName, final String firstName) {
+    final var token = mock(JwtAuthenticationToken.class);
+    final Map<String, Object> attributes = Map.of(
+        "email", eMail,
+        "family_name", lastName,
+        "given_name", firstName
+    );
+    when(token.getTokenAttributes()).thenReturn(attributes);
+    return token;
   }
 }
