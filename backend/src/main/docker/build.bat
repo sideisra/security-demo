@@ -1,1 +1,1 @@
-docker build -t securitydemo:latest .
+docker build -t security-demo:latest .

@@ -10,6 +10,7 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8181/auth/realms/security-demo
+#          TODO: check audience?
 logging:
   level:
     org:

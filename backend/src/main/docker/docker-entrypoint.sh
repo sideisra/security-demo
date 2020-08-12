@@ -8,5 +8,4 @@ java \
     -Djdk.io.permissionsUseCanonicalPath=true \
     -Dsun.misc.URLClassPath.disableJarChecking=true \
     -jar /app/backend.jar \
-    --spring.profiles.active=docker \
-    2> out.txt
+    --spring.profiles.active=docker
