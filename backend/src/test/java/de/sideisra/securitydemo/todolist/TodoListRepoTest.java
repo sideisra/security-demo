@@ -3,7 +3,7 @@ package de.sideisra.securitydemo.todolist;
 import de.sideisra.securitydemo.model.ListOwner;
 import de.sideisra.securitydemo.model.TodoList;
 import de.sideisra.securitydemo.model.meta.TodoListId;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 

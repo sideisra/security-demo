@@ -5,7 +5,7 @@ import de.sideisra.securitydemo.model.*;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
 import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Set;

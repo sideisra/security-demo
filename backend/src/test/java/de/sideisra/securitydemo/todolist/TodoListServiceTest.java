@@ -7,7 +7,7 @@ import de.sideisra.securitydemo.model.TodoListItem;
 import de.sideisra.securitydemo.model.TodoListItemCreate;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import java.util.List;

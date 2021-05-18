@@ -1,13 +1,12 @@
 plugins {
   id 'java'
-  id 'org.springframework.boot' version '2.1.5.RELEASE'
-  id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+  id 'org.springframework.boot' version '2.4.5'
+  id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 }
 
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
 }
 
 wrapper {
@@ -17,21 +16,19 @@ wrapper {
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
-  implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.1.5.RELEASE'
+  implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.4.5'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator'
 
   implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
-  implementation group: 'javax.activation', name: 'activation', version: '1.1'
-  implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.0'
+  implementation group: 'javax.activation', name: 'activation', version: '1.1.1'
+  implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.4'
 
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test'
-  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.11.1'
+  testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.19.0'
 }
 
 test {
-  filter {
-    includeTestsMatching "*Test"
-  }
+  useJUnitPlatform()
 }
 
