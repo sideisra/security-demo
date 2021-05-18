@@ -1,6 +1,6 @@
 package de.sideisra.securitydemo.model;
 
-import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.Objects;
 
@@ -15,8 +15,8 @@ public class ListOwner {
     this.lastName = lastName;
   }
 
-  public static ListOwner fromUserDetails(final SecurityDemoUserDetails user) {
-    return new ListOwner(user.getEmail(), user.getForename(), user.getSurname());
+  public static ListOwner fromUserDetails(final Jwt user) {
+    return new ListOwner(user.getClaimAsString("email"), user.getClaimAsString("given_name"), user.getClaimAsString("family_name"));
   }
 
   public String geteMail() {

@@ -4,11 +4,11 @@ import de.sideisra.securitydemo.exception.AccessDeniedException;
 import de.sideisra.securitydemo.model.*;
 import de.sideisra.securitydemo.model.meta.TodoListId;
 import de.sideisra.securitydemo.model.meta.TodoListItemId;
-import de.sideisra.securitydemo.security.SecurityDemoUserDetails;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.security.oauth2.jwt.Jwt;
 
 import java.util.List;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -17,18 +17,23 @@ import static org.mockito.Mockito.when;
 
 public class TodoListControllerTest {
   private static final ListOwner LIST_OWNER_1 = new ListOwner("test@test.local", "Test", "Local");
-  private static final SecurityDemoUserDetails USER_1 = new SecurityDemoUserDetails(
-      LIST_OWNER_1.geteMail(), LIST_OWNER_1.getLastName(), LIST_OWNER_1.getFirstName(),
-      LIST_OWNER_1.geteMail(), Set.of());
-
+  private static final Jwt USER_1 = mock(Jwt.class);
   private static final ListOwner LIST_OWNER_2 = new ListOwner("test-2@test.local", "Test 2", "Local 2");
-  private static final SecurityDemoUserDetails USER_2 = new SecurityDemoUserDetails(
-      LIST_OWNER_2.geteMail(), LIST_OWNER_2.getLastName(), LIST_OWNER_2.getFirstName(),
-      LIST_OWNER_2.geteMail(), Set.of());
+  private static final Jwt USER_2 = mock(Jwt.class);
 
   private final TodoListService todoListService = mock(TodoListService.class);
 
   private final TodoListController cut = new TodoListController(todoListService);
+
+  @BeforeEach
+  public void setUp() {
+    when(USER_1.getClaimAsString("email")).thenReturn(LIST_OWNER_1.geteMail());
+    when(USER_1.getClaimAsString("family_name")).thenReturn(LIST_OWNER_1.getLastName());
+    when(USER_1.getClaimAsString("given_name")).thenReturn(LIST_OWNER_1.getFirstName());
+    when(USER_2.getClaimAsString("email")).thenReturn(LIST_OWNER_2.geteMail());
+    when(USER_2.getClaimAsString("family_name")).thenReturn(LIST_OWNER_2.getLastName());
+    when(USER_2.getClaimAsString("given_name")).thenReturn(LIST_OWNER_2.getFirstName());
+  }
 
   @Test
   public void shouldTransformGivenPrincipalToListOwnerToAccessAllListsOfOwner() {
