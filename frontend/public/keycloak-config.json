@@ -1,6 +1,6 @@
 {
   "realm": "security-demo",
-  "url": "http://localhost:8181/auth",
+  "url": "http://localhost:8181",
   "ssl-required": "external",
   "resource": "security-demo-frontend",
   "clientId": "security-demo-frontend",

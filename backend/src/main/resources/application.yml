@@ -8,5 +8,5 @@ security:
   oauth2:
     resource:
       jwk:
-        key-set-uri: http://localhost:8181/auth/realms/security-demo/protocol/openid-connect/certs
+        key-set-uri: http://localhost:8181/realms/security-demo/protocol/openid-connect/certs
       id: security-demo-backend
