@@ -5,7 +5,7 @@ import {readFileSync} from "fs";
 async function initKeycloak() {
     console.log("initializing keycloak...");
     const kcAdminClient = new KcAdminClient({
-        baseUrl: 'http://localhost:8181/auth',
+        baseUrl: 'http://localhost:8181',
     });
 
     await kcAdminClient.auth({
@@ -17,7 +17,7 @@ async function initKeycloak() {
 
     const clientRealmName = "security-demo";
 
-    const realmExportFileData = readFileSync("realm-export.json", {encoding: "UTF-8"});
+    const realmExportFileData = readFileSync("realm-export.json", {encoding: "utf-8"});
     const realmRep: RealmRepresentation = JSON.parse(realmExportFileData);
 
     const realm = await kcAdminClient.realms.findOne({
