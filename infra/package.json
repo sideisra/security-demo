@@ -10,7 +10,7 @@
     "wait-on": "5.3.0"
   },
   "scripts": {
-    "start": "docker run --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak-x:13.0.0 start-dev && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
+    "start": "docker run --rm -d -p 8181:8080 --name keycloak -e KEYCLOAK_ADMIN=admin -e KEYCLOAK_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:18.0.0 start-dev && wait-on -l -t 40000 http-get://localhost:8181 && ts-node scripts/initKeycloak",
     "initKeycloak": "ts-node scripts/initKeycloak",
     "stop": "docker stop keycloak"
   },
